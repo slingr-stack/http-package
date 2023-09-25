@@ -1,0 +1,146 @@
+{
+  "label": "HTTP call",
+  "name": "httpCall",
+  "category": "integrations",
+  "description": "This flow step is to send HTTP requests in a generic way.",
+  "inputs": [
+    {
+      "label": "Method",
+      "name": "method",
+      "type": "dropDown",
+      "multiplicity": "one",
+      "required": "true",
+      "defaultValue": "get",
+      "options": {
+        "possibleValues": [
+          {
+            "label": "GET",
+            "name": "get"
+          },
+          {
+            "label": "POST",
+            "name": "post"
+          },
+          {
+            "label": "PUT",
+            "name": "put"
+          },
+          {
+            "label": "DELETE",
+            "name": "delete"
+          },
+          {
+            "label": "CONNECT",
+            "name": "connect"
+          },
+          {
+            "label": "HEAD",
+            "name": "head"
+          },
+          {
+            "label": "OPTIONS",
+            "name": "options"
+          },
+          {
+            "label": "PATCH",
+            "name": "patch"
+          },
+          {
+            "label": "TRACE",
+            "name": "trace"
+          }
+        ],
+        "allowContextSelector": "false"
+      }
+    },
+    {
+      "label": "URL",
+      "name": "url",
+      "description": "The URL to which this endpoint will send the request. Use curly brackets if you require path variables e.g.: https://app.slinger/user/{userId}",
+      "type": "urlParams",
+      "required": "true"
+    },
+    {
+      "label": "Headers",
+      "name": "headers",
+      "description": "Let the client and the server pass additional information with an HTTP request or response in a key value format.",
+      "type": "keyValue"
+    },
+    {
+      "label": "Query params",
+      "name": "params",
+      "description": "Parameters attached to the end of a url in a key value format",
+      "type": "keyValue"
+    },
+    {
+      "label": "Body",
+      "name": "body",
+      "type": "json",
+      "required": "['post', 'put', 'patch'].includes(config.method)",
+      "visibility": "['post', 'put', 'patch'].includes(config.method)",
+      "description": "Content to be sent to the server",
+      "options": {
+        "allowContextSelector": "true"
+      }
+    },
+    {
+      "label": "Advanced Settings",
+      "name": "advancedSettings",
+      "type": "fieldsGroup",
+      "options": {
+        "fields":[
+          {
+            "label": "Follow Redirects",
+            "name": "followRedirects",
+            "type": "boolean",
+            "description": "Follow the redirects when a HTTP request is executed",
+            "defaultValue": false,
+            "options": {
+              "allowContextSelector": "false"
+            }
+          },
+          {
+            "label": "Connection timeout",
+            "name": "connectionTimeout",
+            "description": "Connect timeout interval, in milliseconds (0 = infinity). Default value: 5000 ms (5 sec)",
+            "type": "text",
+            "defaultValue": "5000",
+            "typeOptions": {
+              "validation": {
+                "function": "!config.connectionTimeout || utils.isPlaceholder(config.connectionTimeout) || utils.getInteger(config.connectionTimeout) >= 0",
+                "message": "The time must be a valid placeholder or a positive integer greater than or equal to 0. "
+              }
+            },
+            "options": {
+              "allowContextSelector": "false"
+            }
+          },
+          {
+            "label": "Read timeout",
+            "name": "readTimeout",
+            "description": "Read timeout interval, in milliseconds (0 = infinity). Default value: 60000 ms (60 sec)",
+            "type": "text",
+            "defaultValue": "60000",
+            "typeOptions": {
+              "validation": {
+                "function": "!config.readTimeout || utils.isPlaceholder(config.readTimeout) || utils.getInteger(config.readTimeout) >= 0",
+                "message": "The time must be a valid placeholder or a positive integer greater than or equal to 0. "
+              }
+            },
+            "options": {
+              "allowContextSelector": "false"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "label": "Response",
+      "name": "response",
+      "type": "object",
+      "description": "The response to external URL"
+    }
+  ]
+}
