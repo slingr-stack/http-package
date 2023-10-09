@@ -220,6 +220,11 @@
     ],
     "metadata": [
         {
+            "type": "script",
+            "namespace": "api",
+            "path": "/scripts/functions.js"
+        },
+        {
             "type": "flowStep",
             "namespace": "steps",
             "path": "/flowSteps/httpCall"

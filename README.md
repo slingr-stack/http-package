@@ -9,7 +9,7 @@
     <tbody>
     <tr>
         <td>Http package</td>
-        <td>September 25, 2023</td>
+        <td>October 9, 2023</td>
         <td>Detailed description of the API of the Http package.</td>
     </tr>
     </tbody>
@@ -17,13 +17,7 @@
 
 # Overview
 
-The HTTP package allows making HTTP requests as well as receiving HTTP request from
-other servers with flow steps.
-
-# Javascript API
-
-The Javascript API of the http package has three pieces:
-
+The HTTP package allows making HTTP requests as well as receiving HTTP request from other servers with flow steps.
 
 
 ## Dependencies
