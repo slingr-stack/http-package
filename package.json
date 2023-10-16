@@ -208,7 +208,7 @@
             "name": "HTTP_API_BASE_URL",
             "label": "Http Api Url",
             "type": "label",
-            "value": "https://api.example.com/v1/ // TODO: Set the base url for the api"
+            "value": "https://api.example.com/v1"
         }
     ],
     "events": [

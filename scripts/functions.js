@@ -154,13 +154,13 @@ var checkHttpOptions = function (url, options) {
             // take the 'url' parameter as the options
             options = url || {};
         } else {
-            if (!!options.path || !!options.params || !!options.body) {
+            if (!!options.url || !!options.params || !!options.body) {
                 // options contain the http package format
-                options.path = url;
+                options.url = url;
             } else {
                 // create html package
                 options = {
-                    path: url,
+                    url: url,
                     body: options
                 }
             }
