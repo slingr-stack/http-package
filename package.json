@@ -265,17 +265,17 @@
   "metadata": [
     {
       "type": "script",
-      "namespace": "api",
+      "namespace": "functions",
       "path": "/scripts/functions.js"
     },
     {
       "type": "flowStep",
-      "namespace": "steps",
+      "namespace": "httpCall",
       "path": "/flowSteps/httpCall"
     },
     {
       "type": "flowStep",
-      "namespace": "steps",
+      "namespace": "callback",
       "path": "/flowSteps/callback"
     }
   ]
