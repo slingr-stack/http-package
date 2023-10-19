@@ -126,8 +126,6 @@ log('Response: '+ JSON.stringify(res));
 
 Also, a `POST` request can send information like this:
 
-**Note** : In all functions, if you set a Base URL in the package configuration, for example, https://postman-echo.com,you can replace 'url:' with 'path:'
-
 ```js
 var res = pkg.http.functions.post({
   path: '/post', 
@@ -137,6 +135,7 @@ var res = pkg.http.functions.post({
 });
 log('Response: '+ JSON.stringify(res));
 ```
+**Note** : In all functions, if you set a Base URL in the package configuration, for example, https://postman-echo.com you can replace 'url:' by 'path:'
 
 If the response code is not `2XX` you can catch the exception:
 
