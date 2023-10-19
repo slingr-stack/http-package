@@ -116,32 +116,26 @@ You can make a simple `GET` request like this:
 
 ```js
 var res = pkg.http.functions.get({
-  path: '/orders',
+ url: 'https://postman-echo.com/get',
   params: {
-    type: 'a'
-  },
-  headers: {
-    token: token
+    foo1: '1'
   }
 });
-res.items.forEach(function(item) {
-  log('item: '+item.name);
-});
+log('Response: '+ JSON.stringify(res));
 ```
 
 Also, a `POST` request can send information like this:
 
+**Note** : In all functions, if you set a Base URL in the package configuration, for example, https://postman-echo.com,you can replace 'url:' with 'path:'
+
 ```js
 var res = pkg.http.functions.post({
-  path: '/companies',
-  headers: {
-    token: token
-  },
+  path: '/post', 
   body: {
     name: 'test1'
   }
 });
-log('response from server: '+JSON.stringify(res));
+log('Response: '+ JSON.stringify(res));
 ```
 
 If the response code is not `2XX` you can catch the exception:
@@ -195,9 +189,9 @@ You can make `GET` requests like this:
 
 ```js
 var res = pkg.http.functions.get({
-  path: '/data/companies',
+  url: 'https://postman-echo.com/get',
   params: {
-    type: 'a'
+    foo1: '1'
   },
   headers: {
     'Content-Type': 'application/json',
@@ -212,9 +206,9 @@ If you need to get information of the headers, you can send the `fullResponse` f
 
 ```js
 var res = pkg.http.functions.get({
-  path: '/data/companies',
+  url: 'https://postman-echo.com/get',
   params: {
-    type: 'a'
+    foo1: '1'
   },
   headers: {
     'Content-Type': 'application/json',
@@ -233,7 +227,7 @@ Keep in mind that header keys will be all lower case.
 You can also use a shortcut:
 
 ```js
-var res = pkg.http.functions.get('/data/companies');
+var res = pkg.http.functions.get('https://postman-echo.com/get');
 ```
 
 If you want to overwrite some of the connection values set on the service configuration for only the request, use the
@@ -241,7 +235,7 @@ If you want to overwrite some of the connection values set on the service config
 
 ```js
 var res = pkg.http.functions.get({
-  path: '/data/companies',
+  url:'https://postman-echo.com/get',
   connectionTimeout: 1000,  // 1 sec
   readTimeout: 30000,       // 30 sec
   followRedirects: false    // redirects disabled
@@ -315,11 +309,10 @@ You can make `POST` requests like this:
 
 ```js
 var res = pkg.http.functions.post({
-  path: '/data/companies',
+  url: 'https://postman-echo.com/post',
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    token: token
+    'Accept': 'application/json'
   },
   body: {
     name: 'test 1',
@@ -336,7 +329,7 @@ var body = {
   name: 'test 1',
   type: 'a'
 };
-var res = pkg.http.functions.post('/data/companies', body);
+var res = pkg.http.functions.post('https://postman-echo.com/post', body);
 ```
 
 ### PUT requests
@@ -345,11 +338,10 @@ You can make `PUT` requests like this:
 
 ```js
 var res = pkg.http.functions.put({
-  path: '/data/companies/5506fc3dc2eee3b1a70263b3',
+  url: 'https://postman-echo.com/put',
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    token: token
+    'Accept': 'application/json'
   },
   body: {
     type: 'b'
@@ -364,7 +356,7 @@ You can also use a shortcut:
 var body = {
   type: 'b'
 };
-var res = pkg.http.functions.put('/data/companies/5506fc3dc2eee3b1a70263b3', body);
+var res = pkg.http.functions.put('https://postman-echo.com/put', body);
 ```
 
 ### PATCH requests
@@ -373,11 +365,10 @@ You can make `PATCH` requests like this:
 
 ```js
 var res = pkg.http.functions.patch({
-  path: '/data/companies/5506fc3dc2eee3b1a70263b3',
+  url: 'https://postman-echo.com/patch',
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    token: token
+    'Accept': 'application/json'
   },
   body: {
     type: 'b'
@@ -392,7 +383,7 @@ You can also use a shortcut:
 var body = {
   type: 'b'
 };
-var res = pkg.http.functions.patch('/data/companies/5506fc3dc2eee3b1a70263b3', body);
+var res = pkg.http.functions.patch('https://postman-echo.com/patch', body);
 ```
 
 ### DELETE requests
@@ -401,10 +392,9 @@ You can make `DELETE` requests like this:
 
 ```js
 var res = pkg.http.functions.delete({
-  path: '/data/companies/5506fc3dc2eee3b1a70263b3',
+  url: 'https://postman-echo.com/delete',
   headers: {
-    'Accept': 'application/json',
-    token: token
+    'Accept': 'application/json'
   }
 });
 log(JSON.stringify(res));
@@ -413,7 +403,7 @@ log(JSON.stringify(res));
 You can also use a shortcut:
 
 ```js
-var res = pkg.http.functions.delete('/data/companies/5506fc3dc2eee3b1a70263b3');
+var res = pkg.http.functions.delete('https://postman-echo.com/delete');
 ```
 
 ### OPTIONS requests
@@ -422,10 +412,7 @@ You can make `OPTIONS` requests like this:
 
 ```js
 var res = pkg.http.functions.options({
-  path: '/data/companies/5506fc3dc2eee3b1a70263b3',
-  headers: {
-    token: token
-  },
+  url: 'https://postman-echo.com/options',
   fullResponse: true
 });
 log(JSON.stringify(res));
@@ -434,7 +421,7 @@ log(JSON.stringify(res));
 You can also use a shortcut:
 
 ```js
-var res = pkg.http.functions.options('/data/companies/5506fc3dc2eee3b1a70263b3');
+var res = pkg.http.functions.options('https://postman-echo.com/options');
 ```
 
 ### HEAD requests
@@ -443,10 +430,7 @@ You can make `HEAD` requests like this:
 
 ```js
 var res = pkg.http.functions.head({
-  path: '/data/companies/5506fc3dc2eee3b1a70263b3',
-  headers: {
-    token: token
-  },
+  url: 'https://postman-echo.com/head',
   fullResponse: true
 });
 log(JSON.stringify(res));
@@ -455,7 +439,7 @@ log(JSON.stringify(res));
 You can also use a shortcut:
 
 ```js
-var res = pkg.http.functions.head('/data/companies/5506fc3dc2eee3b1a70263b3');
+var res = pkg.http.functions.head('https://postman-echo.com/head');
 ```
 
 ### Multipart requests
