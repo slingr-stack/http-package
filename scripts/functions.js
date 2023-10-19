@@ -167,16 +167,16 @@ var http = function (options) {
 }
 
 function setApiUri(options) {
-    var api_url = pkgConfig.baseUrl || "";
-    var path = options.path || pkgConfig.emptyPath || "";
-    options.url = api_url + path;
-    sys.logs.debug('[webflow] Set url: ' + options.path + "->" + options.url);
+    var url = pkgConfig.baseUrl || options.url || "";
+    var path = pkgConfig.emptyPath || options.path || "";
+    options.url = url + path;
+    sys.logs.debug('[http] Set url: ' + options.url);
     return options;
 }
 
 function setRequestHeaders(options) {
     var headers = options.headers || {};
-    if (pkgConfig.defaultHeaders.includes('=')){
+    if (pkgConfig.defaultHeaders != null && pkgConfig.defaultHeaders.includes('=')){
         headers = mergeJSON(headers, convertStringToObject(pkgConfig.defaultHeaders));
     }
     if (!headers.hasOwnProperty("Content-Type")) {
@@ -188,7 +188,7 @@ function setRequestHeaders(options) {
 
 function setAuthorization(options) {
     var authorization = options.authorization || {};
-    sys.logs.debug('[Gmelius] setting authorization');
+    sys.logs.debug('[http] setting authorization');
     switch (pkgConfig.authType) {
         case "basic":
             authorization = mergeJSON(authorization, {
