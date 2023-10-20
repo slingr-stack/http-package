@@ -1,12 +1,21 @@
----
-title: HTTP package
-keywords: 
-last_updated: October 17, 2023
-tags: []
-summary: "Detailed description of the API of the HTTP package."
----
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Last Updated</th>
+        <th>Summary</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Http package</td>
+        <td>October 17, 2023</td>
+        <td>Detailed description of the API of the Http package.</td>
+    </tr>
+    </tbody>
+</table>
 
-## Overview
+# Overview
 
 The HTTP package allows making HTTP requests as well as receiving HTTP requests from
 other servers. This is the list of features:
@@ -110,7 +119,7 @@ to the app.
 The difference with the webhooks above is that in this case, the listener should return a
 JSON object that will be returned to the caller.
 
-## Quick start
+# Quick start
 
 You can make a simple `GET` request like this:
 
@@ -157,7 +166,7 @@ sys.logs.info('request headers: ' + JSON.stringify(event.data.headers));
 sys.logs.info('request body: ' + JSON.stringify(event.data.body));
 ```
 
-## Javascript API
+# Javascript API
 
 All methods in the Javascript API allow the following options:
 
@@ -182,7 +191,7 @@ All methods in the Javascript API allow the following options:
 
 Check each method to see how to pass these options.
 
-### GET requests
+## GET requests
 
 You can make `GET` requests like this:
 
@@ -241,7 +250,7 @@ var res = pkg.http.functions.get({
 });
 ```
 
-#### Downloading files
+### Downloading files
 
 Through `GET` requests it is possible to download files, and there are some specific features to
 make it easier. There are three additional options that can be sent in `GET` requests:
@@ -302,7 +311,7 @@ var res = pkg.http.functions.get(
 
 This works like any other callback where the event is `fileDownloaded`.
 
-### POST requests
+## POST requests
 
 You can make `POST` requests like this:
 
@@ -331,7 +340,7 @@ var body = {
 var res = pkg.http.functions.post('https://postman-echo.com/post', body);
 ```
 
-### PUT requests
+## PUT requests
 
 You can make `PUT` requests like this:
 
@@ -358,7 +367,7 @@ var body = {
 var res = pkg.http.functions.put('https://postman-echo.com/put', body);
 ```
 
-### PATCH requests
+## PATCH requests
 
 You can make `PATCH` requests like this:
 
@@ -385,7 +394,7 @@ var body = {
 var res = pkg.http.functions.patch('https://postman-echo.com/patch', body);
 ```
 
-### DELETE requests
+## DELETE requests
 
 You can make `DELETE` requests like this:
 
@@ -405,7 +414,7 @@ You can also use a shortcut:
 var res = pkg.http.functions.delete('https://postman-echo.com/delete');
 ```
 
-### OPTIONS requests
+## OPTIONS requests
 
 You can make `OPTIONS` requests like this:
 
@@ -423,7 +432,7 @@ You can also use a shortcut:
 var res = pkg.http.functions.options('https://postman-echo.com/options');
 ```
 
-### HEAD requests
+## HEAD requests
 
 You can make `HEAD` requests like this:
 
@@ -441,7 +450,7 @@ You can also use a shortcut:
 var res = pkg.http.functions.head('https://postman-echo.com/head');
 ```
 
-### Multipart requests
+## Multipart requests
 
 It is possible to send multipart request when using `POST` or `PUT`. This is specially useful when
 sending files. It works like this:
@@ -515,12 +524,15 @@ return res;
 
 Keep in mind that the response should be a valid JSON.
 
-## About SLINGR
+## Dependencies
+* HTTP Service (Latest Version)
+
+# About SLINGR
 
 SLINGR is a low-code rapid application development platform that accelerates development, with robust architecture for integrations and executing custom workflows and automation.
 
 [More info about SLINGR](https://slingr.io)
 
-## License
+# License
 
 This service is licensed under the Apache License 2.0. See the `LICENSE` file for more details.
