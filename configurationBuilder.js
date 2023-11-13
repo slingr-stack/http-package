@@ -4,7 +4,7 @@
 
 let configurationBuilder = function (config) {
     config.oauth = {
-        id: config.id || 'installationInfo-hhp-User-'+sys.context.getCurrentUserRecord().id(),
+        id: config.id || 'installationInfo-http-User-'+sys.context.getCurrentUserRecord().id(),
         authUrl: config.authUrl,
         accessTokenUrl: config.accessTokenUrl,
         clientId: config.clientId,

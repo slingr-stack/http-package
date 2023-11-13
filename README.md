@@ -1,4 +1,4 @@
-<table>
+<table class="table" style="margin-top: 10px">
     <thead>
     <tr>
         <th>Title</th>
@@ -9,7 +9,7 @@
     <tbody>
     <tr>
         <td>Http package</td>
-        <td>October 17, 2023</td>
+        <td>November 13, 2023</td>
         <td>Detailed description of the API of the Http package.</td>
     </tr>
     </tbody>
@@ -124,7 +124,7 @@ JSON object that will be returned to the caller.
 You can make a simple `GET` request like this:
 
 ```js
-var res = pkg.http.functions.get({
+var res = pkg.http.api.get({
  url: 'https://postman-echo.com/get',
   params: {
     foo1: '1'
@@ -136,7 +136,7 @@ log('Response: '+ JSON.stringify(res));
 Also, a `POST` request can send information like this:
 
 ```js
-var res = pkg.http.functions.post({
+var res = pkg.http.api.post({
   path: '/post', 
   body: {
     name: 'test1'
@@ -150,7 +150,7 @@ If the response code is not `2XX` you can catch the exception:
 
 ```js
 try {
-  pkg.http.functions.post(msg);
+  pkg.http.api.post(msg);
 } catch (e) {
   log('status code: '+e.additionalInfo.status);
   log('headers: '+JSON.stringify(e.additionalInfo.headers));
@@ -196,7 +196,7 @@ Check each method to see how to pass these options.
 You can make `GET` requests like this:
 
 ```js
-var res = pkg.http.functions.get({
+var res = pkg.http.api.get({
   url: 'https://postman-echo.com/get',
   params: {
     foo1: '1'
@@ -213,7 +213,7 @@ log(JSON.stringify(res)); // this will print the body of the response
 If you need to get information of the headers, you can send the `fullResponse` flag in `true`:
 
 ```js
-var res = pkg.http.functions.get({
+var res = pkg.http.api.get({
   url: 'https://postman-echo.com/get',
   params: {
     foo1: '1'
@@ -235,14 +235,14 @@ Keep in mind that header keys will be all lower case.
 You can also use a shortcut:
 
 ```js
-var res = pkg.http.functions.get('https://postman-echo.com/get');
+var res = pkg.http.api.get('https://postman-echo.com/get');
 ```
 
 If you want to overwrite some of the connection values set on the service configuration for only the request, use the
 `connectionTimeout`, `readTimeout` and `followRedirects` flags:
 
 ```js
-var res = pkg.http.functions.get({
+var res = pkg.http.api.get({
   url:'https://postman-echo.com/get',
   connectionTimeout: 1000,  // 1 sec
   readTimeout: 30000,       // 30 sec
@@ -265,7 +265,7 @@ make it easier. There are three additional options that can be sent in `GET` req
 If you want to download a file in a synchronous way, you should do something like this:
 
 ```js
-var res = pkg.http.functions.get({
+var res = pkg.http.api.get({
   path: '/images/client_400x400.png',
   forceDownload: true,
   downloadSync: true
@@ -285,7 +285,7 @@ sys.data.save(record);
 If you don't want to block execution until the download is completed, you can do it asynchronously:
 
 ```js
-var res = pkg.http.functions.get(
+var res = pkg.http.api.get(
   {
     path: '/images/client_400x400.png',
     forceDownload: true
@@ -316,7 +316,7 @@ This works like any other callback where the event is `fileDownloaded`.
 You can make `POST` requests like this:
 
 ```js
-var res = pkg.http.functions.post({
+var res = pkg.http.api.post({
   url: 'https://postman-echo.com/post',
   headers: {
     'Content-Type': 'application/json',
@@ -337,7 +337,7 @@ var body = {
   name: 'test 1',
   type: 'a'
 };
-var res = pkg.http.functions.post('https://postman-echo.com/post', body);
+var res = pkg.http.api.post('https://postman-echo.com/post', body);
 ```
 
 ## PUT requests
@@ -345,7 +345,7 @@ var res = pkg.http.functions.post('https://postman-echo.com/post', body);
 You can make `PUT` requests like this:
 
 ```js
-var res = pkg.http.functions.put({
+var res = pkg.http.api.put({
   url: 'https://postman-echo.com/put',
   headers: {
     'Content-Type': 'application/json',
@@ -364,7 +364,7 @@ You can also use a shortcut:
 var body = {
   type: 'b'
 };
-var res = pkg.http.functions.put('https://postman-echo.com/put', body);
+var res = pkg.http.api.put('https://postman-echo.com/put', body);
 ```
 
 ## PATCH requests
@@ -372,7 +372,7 @@ var res = pkg.http.functions.put('https://postman-echo.com/put', body);
 You can make `PATCH` requests like this:
 
 ```js
-var res = pkg.http.functions.patch({
+var res = pkg.http.api.patch({
   url: 'https://postman-echo.com/patch',
   headers: {
     'Content-Type': 'application/json',
@@ -391,7 +391,7 @@ You can also use a shortcut:
 var body = {
   type: 'b'
 };
-var res = pkg.http.functions.patch('https://postman-echo.com/patch', body);
+var res = pkg.http.api.patch('https://postman-echo.com/patch', body);
 ```
 
 ## DELETE requests
@@ -399,7 +399,7 @@ var res = pkg.http.functions.patch('https://postman-echo.com/patch', body);
 You can make `DELETE` requests like this:
 
 ```js
-var res = pkg.http.functions.delete({
+var res = pkg.http.api.delete({
   url: 'https://postman-echo.com/delete',
   headers: {
     'Accept': 'application/json'
@@ -411,7 +411,7 @@ log(JSON.stringify(res));
 You can also use a shortcut:
 
 ```js
-var res = pkg.http.functions.delete('https://postman-echo.com/delete');
+var res = pkg.http.api.delete('https://postman-echo.com/delete');
 ```
 
 ## OPTIONS requests
@@ -419,7 +419,7 @@ var res = pkg.http.functions.delete('https://postman-echo.com/delete');
 You can make `OPTIONS` requests like this:
 
 ```js
-var res = pkg.http.functions.options({
+var res = pkg.http.api.options({
   url: 'https://postman-echo.com/options',
   fullResponse: true
 });
@@ -429,7 +429,7 @@ log(JSON.stringify(res));
 You can also use a shortcut:
 
 ```js
-var res = pkg.http.functions.options('https://postman-echo.com/options');
+var res = pkg.http.api.options('https://postman-echo.com/options');
 ```
 
 ## HEAD requests
@@ -437,7 +437,7 @@ var res = pkg.http.functions.options('https://postman-echo.com/options');
 You can make `HEAD` requests like this:
 
 ```js
-var res = pkg.http.functions.head({
+var res = pkg.http.api.head({
   url: 'https://postman-echo.com/head',
   fullResponse: true
 });
@@ -447,7 +447,7 @@ log(JSON.stringify(res));
 You can also use a shortcut:
 
 ```js
-var res = pkg.http.functions.head('https://postman-echo.com/head');
+var res = pkg.http.api.head('https://postman-echo.com/head');
 ```
 
 ## Multipart requests
@@ -473,7 +473,7 @@ var request = {
         }
     ]
 };
-var res = pkg.http.functions.post(request);
+var res = pkg.http.api.post(request);
 ```
 
 As you can see, you can send one or many parts in the multipart. Each part has the following fields:
@@ -526,6 +526,7 @@ Keep in mind that the response should be a valid JSON.
 
 ## Dependencies
 * HTTP Service (Latest Version)
+* Oauth Package (v1.0.18)
 
 # About SLINGR
 

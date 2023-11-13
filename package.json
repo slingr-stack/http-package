@@ -265,8 +265,8 @@
   "metadata": [
     {
       "type": "script",
-      "namespace": "functions",
-      "path": "/scripts/functions.js"
+      "namespace": "api",
+      "path": "/scripts/api.js"
     },
     {
       "type": "flowStep",
