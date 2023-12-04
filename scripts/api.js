@@ -280,7 +280,13 @@ let stringType = Function.prototype.call.bind(Object.prototype.toString)
  Configurator
  ****************************************************/
 
-let pkgConfig = config.get()
+let pkgConfig = config.get() || {
+    baseUrl: null,
+    defaultHeaders: null,
+    authType: null,
+    emptyPath: null
+};
+
 let Http = function (options) {
     options = options || {};
     options = setApiUri(options);
