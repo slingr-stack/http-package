@@ -361,11 +361,11 @@ function mergeJSON (json1, json2) {
 }
 
 function convertStringToObject(inputString) {
-    let pairs = inputString.split(',');
-    let result = {};
-    for (let i = 0; i < pairs.length; i++) {
-        let keyValue = pairs[i].split('=');
-        let key = keyValue[0].trim();
+    var pairs = inputString.split(',');
+    var result = {};
+    for (var i = 0; i < pairs.length; i++) {
+        var keyValue = pairs[i].split('=');
+        var key = keyValue[0].trim();
         result[key] = keyValue[1].trim();
     }
     return result;
