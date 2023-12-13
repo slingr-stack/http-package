@@ -2,9 +2,9 @@
  Dependencies
  ****************************************************/
 
-let httpReference = dependencies.http;
+var httpReference = dependencies.http;
 
-let httpDependency = {
+var httpDependency = {
     get: httpReference.get,
     post: httpReference.post,
     put: httpReference.put,
@@ -14,7 +14,7 @@ let httpDependency = {
     options: httpReference.options
 };
 
-let httpService = {};
+var httpService = {};
 
 /**
  *
@@ -34,7 +34,7 @@ function createWrapperFunction(requestFn) {
     };
 }
 
-for (let key in httpDependency) {
+for (var key in httpDependency) {
     if (typeof httpDependency[key] === 'function') httpService[key] = createWrapperFunction(httpDependency[key]);
 }
 
@@ -62,7 +62,7 @@ exports.removeAccessToken = function () {
  * @return {object}             - The response of the GET request.
  */
 exports.get = function(path, httpOptions, callbackData, callbacks) {
-    let options = checkHttpOptions(path, httpOptions);
+    var options = checkHttpOptions(path, httpOptions);
     return httpService.get(Http(options), callbackData, callbacks);
 };
 
@@ -76,7 +76,7 @@ exports.get = function(path, httpOptions, callbackData, callbacks) {
  * @return {object}             - The response of the POST request.
  */
 exports.post = function(path, httpOptions, callbackData, callbacks) {
-    let options = checkHttpOptions(path, httpOptions);
+    var options = checkHttpOptions(path, httpOptions);
     return httpService.post(Http(options), callbackData, callbacks);
 };
 
@@ -90,7 +90,7 @@ exports.post = function(path, httpOptions, callbackData, callbacks) {
  * @return {object}             - The response of the PUT request.
  */
 exports.put = function(path, httpOptions, callbackData, callbacks) {
-    let options = checkHttpOptions(path, httpOptions);
+    var options = checkHttpOptions(path, httpOptions);
     return httpService.put(Http(options), callbackData, callbacks);
 };
 
@@ -104,7 +104,7 @@ exports.put = function(path, httpOptions, callbackData, callbacks) {
  * @return {object}             - The response of the PATCH request.
  */
 exports.patch = function(path, httpOptions, callbackData, callbacks) {
-    let options = checkHttpOptions(path, httpOptions);
+    var options = checkHttpOptions(path, httpOptions);
     return httpService.patch(Http(options), callbackData, callbacks);
 };
 
@@ -118,7 +118,7 @@ exports.patch = function(path, httpOptions, callbackData, callbacks) {
  * @return {object}             - The response of the DELETE request.
  */
 exports.delete = function(path, httpOptions, callbackData, callbacks) {
-    let options = checkHttpOptions(path, httpOptions);
+    var options = checkHttpOptions(path, httpOptions);
     return httpService.delete(Http(options), callbackData, callbacks);
 };
 
@@ -132,7 +132,7 @@ exports.delete = function(path, httpOptions, callbackData, callbacks) {
  * @return {object}             - The response of the HEAD request.
  */
 exports.head = function(path, httpOptions, callbackData, callbacks) {
-    let options = checkHttpOptions(path, httpOptions);
+    var options = checkHttpOptions(path, httpOptions);
     return httpService.head(Http(options), callbackData, callbacks);
 };
 
@@ -146,7 +146,7 @@ exports.head = function(path, httpOptions, callbackData, callbacks) {
  * @return {object}             - The response of the OPTIONS request.
  */
 exports.options = function(path, httpOptions, callbackData, callbacks) {
-    let options = checkHttpOptions(path, httpOptions);
+    var options = checkHttpOptions(path, httpOptions);
     return httpService.options(Http(options), callbackData, callbacks);
 };
 
@@ -223,9 +223,9 @@ exports.utils = {
  */
 exports.utils.verifySignature = function (body, signature, signature256) {
     sys.logs.info("Checking signature");
-    let verified = true;
-    let verified256 = true;
-    let secret = config.get("webhookSecret");
+    var verified = true;
+    var verified256 = true;
+    var secret = config.get("webhookSecret");
     if (!body || body === "") {
         sys.logs.warn("The body is null or empty");
         return false;
@@ -274,20 +274,20 @@ function isObject (obj) {
     return !!obj && stringType(obj) === '[object Object]'
 }
 
-let stringType = Function.prototype.call.bind(Object.prototype.toString)
+var stringType = Function.prototype.call.bind(Object.prototype.toString)
 
 /****************************************************
  Configurator
  ****************************************************/
 
-let pkgConfig = config.get() || {
+var pkgConfig = config.get() || {
     baseUrl: null,
     defaultHeaders: null,
     authType: null,
     emptyPath: null
 };
 
-let Http = function (options) {
+var Http = function (options) {
     options = options || {};
     options = setApiUri(options);
     options = setRequestHeaders(options);
@@ -296,15 +296,15 @@ let Http = function (options) {
 }
 
 function setApiUri(options) {
-    let url = pkgConfig.baseUrl || options.url || "";
-    let path = pkgConfig.emptyPath || options.path || "";
+    var url = pkgConfig.baseUrl || options.url || "";
+    var path = pkgConfig.emptyPath || options.path || "";
     options.url = url + path;
     sys.logs.debug('[http] Set url: ' + options.url);
     return options;
 }
 
 function setRequestHeaders(options) {
-    let headers = options.headers || {};
+    var headers = options.headers || {};
     if (pkgConfig.defaultHeaders != null && pkgConfig.defaultHeaders.includes('=')){
         headers = mergeJSON(headers, convertStringToObject(pkgConfig.defaultHeaders));
     }
@@ -316,7 +316,7 @@ function setRequestHeaders(options) {
 }
 
 function setAuthorization(options) {
-    let authorization = options.authorization || {};
+    var authorization = options.authorization || {};
     sys.logs.debug('[http] setting authorization');
     switch (pkgConfig.authType) {
         case "basic":
@@ -350,7 +350,7 @@ function setAuthorization(options) {
 
 function mergeJSON (json1, json2) {
     const result = {};
-    let key;
+    var key;
     for (key in json1) {
         if (json1.hasOwnProperty(key)) result[key] = json1[key];
     }
