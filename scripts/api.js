@@ -2,9 +2,9 @@
  Dependencies
  ****************************************************/
 
-var httpReference = dependencies.http;
+let httpReference = dependencies.http;
 
-var httpDependency = {
+let httpDependency = {
     get: httpReference.get,
     post: httpReference.post,
     put: httpReference.put,
@@ -14,7 +14,7 @@ var httpDependency = {
     options: httpReference.options
 };
 
-var httpService = {};
+let httpService = {};
 
 /**
  *
@@ -24,7 +24,7 @@ function handleRequestWithRetry(requestFn, options, callbackData, callbacks) {
     try {
         return requestFn(options, callbackData, callbacks);
     } catch (error) {
-        sys.logs.info("[http] Handling request " + JSON.stringify(error));
+        sys.logs.info("[http] Handling request" + JSON.stringify(error));
     }
 }
 
@@ -34,7 +34,7 @@ function createWrapperFunction(requestFn) {
     };
 }
 
-for (var key in httpDependency) {
+for (let key in httpDependency) {
     if (typeof httpDependency[key] === 'function') httpService[key] = createWrapperFunction(httpDependency[key]);
 }
 
@@ -52,7 +52,7 @@ for (var key in httpDependency) {
  * @return {object}             - The response of the GET request.
  */
 exports.get = function(path, httpOptions, callbackData, callbacks) {
-    var options = checkHttpOptions(path, httpOptions);
+    let options = checkHttpOptions(path, httpOptions);
     return httpService.get(Http(options), callbackData, callbacks);
 };
 
@@ -66,7 +66,7 @@ exports.get = function(path, httpOptions, callbackData, callbacks) {
  * @return {object}             - The response of the POST request.
  */
 exports.post = function(path, httpOptions, callbackData, callbacks) {
-    var options = checkHttpOptions(path, httpOptions);
+    let options = checkHttpOptions(path, httpOptions);
     return httpService.post(Http(options), callbackData, callbacks);
 };
 
@@ -80,7 +80,7 @@ exports.post = function(path, httpOptions, callbackData, callbacks) {
  * @return {object}             - The response of the PUT request.
  */
 exports.put = function(path, httpOptions, callbackData, callbacks) {
-    var options = checkHttpOptions(path, httpOptions);
+    let options = checkHttpOptions(path, httpOptions);
     return httpService.put(Http(options), callbackData, callbacks);
 };
 
@@ -94,7 +94,7 @@ exports.put = function(path, httpOptions, callbackData, callbacks) {
  * @return {object}             - The response of the PATCH request.
  */
 exports.patch = function(path, httpOptions, callbackData, callbacks) {
-    var options = checkHttpOptions(path, httpOptions);
+    let options = checkHttpOptions(path, httpOptions);
     return httpService.patch(Http(options), callbackData, callbacks);
 };
 
@@ -108,7 +108,7 @@ exports.patch = function(path, httpOptions, callbackData, callbacks) {
  * @return {object}             - The response of the DELETE request.
  */
 exports.delete = function(path, httpOptions, callbackData, callbacks) {
-    var options = checkHttpOptions(path, httpOptions);
+    let options = checkHttpOptions(path, httpOptions);
     return httpService.delete(Http(options), callbackData, callbacks);
 };
 
@@ -122,7 +122,7 @@ exports.delete = function(path, httpOptions, callbackData, callbacks) {
  * @return {object}             - The response of the HEAD request.
  */
 exports.head = function(path, httpOptions, callbackData, callbacks) {
-    var options = checkHttpOptions(path, httpOptions);
+    let options = checkHttpOptions(path, httpOptions);
     return httpService.head(Http(options), callbackData, callbacks);
 };
 
@@ -136,7 +136,7 @@ exports.head = function(path, httpOptions, callbackData, callbacks) {
  * @return {object}             - The response of the OPTIONS request.
  */
 exports.options = function(path, httpOptions, callbackData, callbacks) {
-    var options = checkHttpOptions(path, httpOptions);
+    let options = checkHttpOptions(path, httpOptions);
     return httpService.options(Http(options), callbackData, callbacks);
 };
 
@@ -213,9 +213,9 @@ exports.utils = {
  */
 exports.utils.verifySignature = function (body, signature, signature256) {
     sys.logs.info("Checking signature");
-    var verified = true;
-    var verified256 = true;
-    var secret = config.get("webhookSecret");
+    let verified = true;
+    let verified256 = true;
+    let secret = config.get("webhookSecret");
     if (!body || body === "") {
         sys.logs.warn("The body is null or empty");
         return false;
@@ -264,20 +264,20 @@ function isObject (obj) {
     return !!obj && stringType(obj) === '[object Object]'
 }
 
-var stringType = Function.prototype.call.bind(Object.prototype.toString)
+let stringType = Function.prototype.call.bind(Object.prototype.toString)
 
 /****************************************************
  Configurator
  ****************************************************/
 
-var pkgConfigurationHttp = config.get() || {
+let pkgConfigurationHttp = config.get() || {
     baseUrl: null,
     defaultHeaders: null,
     authType: null,
     emptyPath: null
 };
 
-var Http = function (options) {
+let Http = function (options) {
     options = options || {};
     options = setApiUri(options);
     options = setRequestHeaders(options);
@@ -286,15 +286,15 @@ var Http = function (options) {
 }
 
 function setApiUri(options) {
-    var url = pkgConfigurationHttp.baseUrl || options.url || "";
-    var path = pkgConfigurationHttp.emptyPath || options.path || "";
+    let url = pkgConfigurationHttp.baseUrl || options.url || "";
+    let path = pkgConfigurationHttp.emptyPath || options.path || "";
     options.url = url + path;
     sys.logs.debug('[http] Set url: ' + options.url);
     return options;
 }
 
 function setRequestHeaders(options) {
-    var headers = options.headers || {};
+    let headers = options.headers || {};
     if (pkgConfigurationHttp.defaultHeaders != null && pkgConfigurationHttp.defaultHeaders.includes('=')){
         headers = mergeJSON(headers, convertStringToObject(pkgConfigurationHttp.defaultHeaders));
     }
@@ -306,7 +306,7 @@ function setRequestHeaders(options) {
 }
 
 function setAuthorization(options) {
-    var authorization = options.authorization || {};
+    let authorization = options.authorization || {};
     sys.logs.debug('[http] setting authorization');
     switch (pkgConfigurationHttp.authType) {
         case "basic":
@@ -340,7 +340,7 @@ function setAuthorization(options) {
 
 function mergeJSON (json1, json2) {
     const result = {};
-    var key;
+    let key;
     for (key in json1) {
         if (json1.hasOwnProperty(key)) result[key] = json1[key];
     }
