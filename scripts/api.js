@@ -38,16 +38,6 @@ for (var key in httpDependency) {
     if (typeof httpDependency[key] === 'function') httpService[key] = createWrapperFunction(httpDependency[key]);
 }
 
-exports.getAccessToken = function () {
-    sys.logs.info("[http] Getting access token from oauth");
-    return dependencies.oauth.functions.connectUser('http:userConnected');
-}
-
-exports.removeAccessToken = function () {
-    sys.logs.info("[http] Removing access token from oauth");
-    return dependencies.oauth.functions.disconnectUser('http:disconnectUser');
-}
-
 /****************************************************
  Public API - Generic Functions
  ****************************************************/
@@ -280,7 +270,7 @@ var stringType = Function.prototype.call.bind(Object.prototype.toString)
  Configurator
  ****************************************************/
 
-var pkgConfig = config.get() || {
+var pkgConfigurationHttp = config.get() || {
     baseUrl: null,
     defaultHeaders: null,
     authType: null,
@@ -296,8 +286,8 @@ var Http = function (options) {
 }
 
 function setApiUri(options) {
-    var url = pkgConfig.baseUrl || options.url || "";
-    var path = pkgConfig.emptyPath || options.path || "";
+    var url = pkgConfigurationHttp.baseUrl || options.url || "";
+    var path = pkgConfigurationHttp.emptyPath || options.path || "";
     options.url = url + path;
     sys.logs.debug('[http] Set url: ' + options.url);
     return options;
@@ -305,8 +295,8 @@ function setApiUri(options) {
 
 function setRequestHeaders(options) {
     var headers = options.headers || {};
-    if (pkgConfig.defaultHeaders != null && pkgConfig.defaultHeaders.includes('=')){
-        headers = mergeJSON(headers, convertStringToObject(pkgConfig.defaultHeaders));
+    if (pkgConfigurationHttp.defaultHeaders != null && pkgConfigurationHttp.defaultHeaders.includes('=')){
+        headers = mergeJSON(headers, convertStringToObject(pkgConfigurationHttp.defaultHeaders));
     }
     if (!headers.hasOwnProperty("Content-Type")) {
         headers = mergeJSON(headers, {"Content-Type": "application/json"});
@@ -318,25 +308,25 @@ function setRequestHeaders(options) {
 function setAuthorization(options) {
     var authorization = options.authorization || {};
     sys.logs.debug('[http] setting authorization');
-    switch (pkgConfig.authType) {
+    switch (pkgConfigurationHttp.authType) {
         case "basic":
             authorization = mergeJSON(authorization, {
                 type: "basic",
-                username: pkgConfig.username,
-                password: pkgConfig.password
+                username: pkgConfigurationHttp.username,
+                password: pkgConfigurationHttp.password
             });
             break;
         case "digest":
             authorization = mergeJSON(authorization, {
                 type: "digest",
-                username: pkgConfig.username,
-                password: pkgConfig.password
+                username: pkgConfigurationHttp.username,
+                password: pkgConfigurationHttp.password
             });
             break;
         case "oauth2":
             authorization = mergeJSON(authorization, {
                 type: "oauth2",
-                accessToken: sys.storage.get(pkgConfig.id + ' - access_token',{decrypt:true}),
+                accessToken: sys.storage.get(pkgConfigurationHttp.id + ' - access_token',{decrypt:true}),
                 headerPrefix: "Bearer"
             });
             break;
