@@ -7,14 +7,8 @@
       "name": "http",
       "version": "v1.2.6",
       "instanceId": "shared"
-    },
-    {
-      "type": "package",
-      "name": "oauth",
-      "version": "~v1.0.18"
     }
   ],
-  "configurationBuilder": "/configurationBuilder.js",
   "configuration": [
     {
       "name": "baseUrl",
