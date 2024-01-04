@@ -25,10 +25,10 @@ function handleRequestWithRetry(requestFn, options, callbackData, callbacks) {
         return requestFn(options, callbackData, callbacks);
     } catch (error) {
         sys.logs.info("[http] Handling error... ");
-        sys.logs.info("Status code: " + JSON.stringify(e.additionalInfo.details.data.additionalInfo.status));
-        sys.logs.info("Body: " + JSON.stringify(e.additionalInfo.details.data.additionalInfo.body));
-        sys.logs.info("Headers: " + JSON.stringify(e.additionalInfo.details.data.additionalInfo.headers));
-        sys.logs.info("Short error description: " + JSON.stringify(e.message));
+        sys.logs.info("Status code: " + JSON.stringify(error.additionalInfo.details.data.additionalInfo.status));
+        sys.logs.info("Body: " + JSON.stringify(error.additionalInfo.details.data.additionalInfo.body));
+        sys.logs.info("Headers: " + JSON.stringify(error.additionalInfo.details.data.additionalInfo.headers));
+        sys.logs.info("Short error description: " + JSON.stringify(error.message));
         return error;
     }
 }
