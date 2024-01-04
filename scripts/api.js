@@ -24,11 +24,11 @@ function handleRequestWithRetry(requestFn, options, callbackData, callbacks) {
     try {
         return requestFn(options, callbackData, callbacks);
     } catch (error) {
-        sys.logs.info("[http] Handling error... ");
-        sys.logs.info("Status code: " + JSON.stringify(error.additionalInfo.details.data.additionalInfo.status));
-        sys.logs.info("Body: " + JSON.stringify(error.additionalInfo.details.data.additionalInfo.body));
-        sys.logs.info("Headers: " + JSON.stringify(error.additionalInfo.details.data.additionalInfo.headers));
-        sys.logs.info("Short error description: " + JSON.stringify(error.message));
+        sys.logs.debug("[http] Handling error... ");
+        sys.logs.debug("[http] Status code: " + JSON.stringify(error.additionalInfo.details.data.additionalInfo.status));
+        sys.logs.debug("[http] Body: " + JSON.stringify(error.additionalInfo.details.data.additionalInfo.body));
+        sys.logs.debug("[http] Headers: " + JSON.stringify(error.additionalInfo.details.data.additionalInfo.headers));
+        sys.logs.debug("[http] Short error description: " + JSON.stringify(error.message));
         throw error;
     }
 }
