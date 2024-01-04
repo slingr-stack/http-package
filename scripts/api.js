@@ -29,7 +29,7 @@ function handleRequestWithRetry(requestFn, options, callbackData, callbacks) {
         sys.logs.info("Body: " + JSON.stringify(error.additionalInfo.details.data.additionalInfo.body));
         sys.logs.info("Headers: " + JSON.stringify(error.additionalInfo.details.data.additionalInfo.headers));
         sys.logs.info("Short error description: " + JSON.stringify(error.message));
-        return error;
+        throw error;
     }
 }
 
