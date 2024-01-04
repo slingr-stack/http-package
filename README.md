@@ -9,7 +9,7 @@
     <tbody>
     <tr>
         <td>Http package</td>
-        <td>November 13, 2023</td>
+        <td>January 4, 2024</td>
         <td>Detailed description of the API of the Http package.</td>
     </tr>
     </tbody>
@@ -30,20 +30,20 @@ other servers. This is the list of features:
 - Support for SSL
 
 In many cases, you can use the HTTP package to call external services where an official
-service does not exist. This will work as long as they provide a REST HTTP API.
+package does not exist. This will work as long as they provide a REST HTTP API.
 
 ## Configuration
 
 ### Base URL
 
-If all the requests you will be doing through this service have a common root URL, you can
+If all the requests you will be doing through this package have a common root URL, you can
 put it here to avoid having to pass it on every request.
 
 You can also leave this empty and provide the full URL on each request.
 
 ### Default headers
 
-Allows defining headers that will be added to all requests done through this service.
+Allows defining headers that will be added to all requests done through this package.
 The format is `key=value` and you can specify several headers separated by commas:
 
 ```
@@ -52,7 +52,7 @@ Content-Type=application/json,Accept=application/json
 
 ### Empty path
 
-If the path is empty when a request is done through the service, this is the default path
+If the path is empty when a request is done through the package, this is the default path
 that will be used. You can leave this empty if you don't want any default path.
 
 ### Authorization
@@ -84,12 +84,12 @@ service, where the service will send the last received cookies in subsequent req
 
 ### Allow External URLs
 
-Disable this flag if you want to restrict the service to only allow requests with the same domain as the service.
+Disable this flag if you want to restrict the package to only allow requests with the same domain as the package.
 This is useful to avoid external requests to other services. This will ignore the `Base URL` configuration.
 
 ### Connection timeout
 
-This is the maximum time the service waits to perform the connection to an external
+This is the maximum time the package waits to perform the connection to an external
 service.
 If it times out, an exception is thrown and the request canceled.
 Default value: 5000 ms (5 sec).
@@ -97,23 +97,23 @@ Set to zero for to wait indefinitely.
 
 ### Read timeout
 
-This is the maximum time the service waits to receive the response to a request to
+This is the maximum time the package waits to receive the response to a request to
 an external service. If it times out, an exception is thrown and the request
 canceled. Default value: 60000 ms (60 sec). Set to zero to wait indefinitely.
 
 ### Follow redirects
 
-If it is enabled, the service will automatically redirect when it receives a
+If it is enabled, the package will automatically redirect when it receives a
 `3xx` HTTP status code as response to a request.
 
 ### Webhook URL
 
-This is the URL the service will be listening for requests, which will be sent as events
+This is the URL the package will be listening for requests, which will be sent as events
 to the app.
 
 ### Sync Webhook URL
 
-This is the URL the service will be listening for requests, which will be sent as events
+This is the URL the package will be listening for requests, which will be sent as events
 to the app.
 
 The difference with the webhooks above is that in this case, the listener should return a
@@ -150,11 +150,19 @@ If the response code is not `2XX` you can catch the exception:
 
 ```js
 try {
-  pkg.http.api.post(msg);
+  pkg.http.api.post({url: "https://mock.codes/403"});
 } catch (e) {
-  log('status code: '+e.additionalInfo.status);
-  log('headers: '+JSON.stringify(e.additionalInfo.headers));
-  log('body: '+JSON.stringify(e.additionalInfo.body));
+  log("Full error: " + JSON.stringify(e));
+  log("Short error description: " + JSON.stringify((e.message)));
+
+  log("Internal error: " + JSON.stringify((e.additionalInfo.error)));
+  log("Error description: " + JSON.stringify((e.additionalInfo.description)));
+
+  log("Original request: " + JSON.stringify(e.additionalInfo.request));
+  log("Timestamp: " + JSON.stringify((e.additionalInfo.details.date)));
+  log("Status code: " + JSON.stringify((e.additionalInfo.details.data.additionalInfo.status)));
+  log("Body: " + JSON.stringify((e.additionalInfo.details.data.additionalInfo.body)));
+  log("Headers: " + JSON.stringify((e.additionalInfo.details.data.additionalInfo.headers)));
 }
 ```
 
@@ -171,27 +179,49 @@ sys.logs.info('request body: ' + JSON.stringify(event.data.body));
 All methods in the Javascript API allow the following options:
 
 - `path`: the URL you will send the request. Keep in mind that if you configured a `Base URL` in
-  the service this path will be appended to the URL.
+  the package this path will be appended to the URL.
 - `params`: an object with query parameters for the request (they go in the query string part of
   the request).
 - `headers`: an object with headers to send in the request.
-  If you provide headers, these will override the ones defined in the service's configuration.
+  If you provide headers, these will override the ones defined in the package's configuration.
 - `body`: this is the body of the request. If you are using JSON, you can directly send an object
   or array, and it will be automatically converted to a JSON string. If you are using an XML content
   type, this will be converted based on the rules defined [above](#xml).
-- `fullResponse`: controls what will be set in the response. If `true` the response when calling
-  an HTTP method will be an object with fields `status`, `headers` and `body`. This is important
-  if you need to check status or headers in the response.
-- `connectionTimeout`: overwrites the [`Connection timeout`](#connection-timeout) configuration set on the service only
-  for the request.
-- `readTimeout`: overwrites the [`Read timeout`](#read-timeout) configuration set on the service only for the
-  request.
-- `followRedirects`: overwrites the [`Follow redirects`](#follow-redirects) configuration set on the service only for
-  the request.
+- `àuthorization`: an object with the method of authorization as explained above.
+- `settings`: an object with each option to customize the request
 
 Check each method to see how to pass these options.
 
-## GET requests
+## Settings
+
+- `connectionTimeout`: overwrites the [`Connection timeout`](#connection-timeout) configuration set on the package only
+  for the request.
+- `readTimeout`: overwrites the [`Read timeout`](#read-timeout) configuration set on the package only for the
+  request.
+- `followRedirects`: overwrites the [`Follow redirects`](#follow-redirects) configuration set on the package only for
+  the request.
+- `maxRedirects`: the maximum value of hosts that a request with code 3xx will pass through (default: 10)
+- `fullResponse`: controls what will be set in the response. If `true` the response when calling
+  an HTTP method will be an object with fields `status`, `headers` and `body`. This is important
+  if you need to check status or headers in the response.
+- `forceDownload`: to download files.
+- `downloadSync`: to download files syncronic, blocking the execution (needed the previous flag).
+- `encodeUrl`: this flag codifies the url with UTF-8 encoding. (if the url has been previously encoded should be true)
+- `forceDisableCookies`: overwrites the [`Remember cookies`](#remember-cookies) configuration set on the package only for
+  the request.
+  (take account that this flag is the opposite than the configuration)
+- `removeRefererHeaderOnRedirect`: remove the "Referer" header from the response.
+- `defaultCallback`: callback function.
+- `followAuthorizationHeader`: maintain the "Authorization" header when are 3xx codes.
+- `followOriginalHttpMethod`: maintain the "Method" of the request when are 3xx codes.
+- `useSSL`: allow configure SSL.
+- `fileName`: the name of the file that would be downloaded (needs the forceDownload flag otherwise is ignored).
+- `multipart`: allows sending multipart content.
+
+## Methods
+
+
+### GET requests
 
 You can make `GET` requests like this:
 
@@ -223,7 +253,7 @@ var res = pkg.http.api.get({
     'Accept': 'application/json',
     token: token
   },
-  fullResponse: true
+  settings: {fullResponse: true}
 });
 log(JSON.stringify(res.status));
 log(JSON.stringify(res.headers));
@@ -238,15 +268,17 @@ You can also use a shortcut:
 var res = pkg.http.api.get('https://postman-echo.com/get');
 ```
 
-If you want to overwrite some of the connection values set on the service configuration for only the request, use the
+If you want to overwrite some of the connection values set on the package configuration for only the request, use the
 `connectionTimeout`, `readTimeout` and `followRedirects` flags:
 
 ```js
 var res = pkg.http.api.get({
   url:'https://postman-echo.com/get',
-  connectionTimeout: 1000,  // 1 sec
-  readTimeout: 30000,       // 30 sec
-  followRedirects: false    // redirects disabled
+  settings: {
+    connectionTimeout: 1000,  // 1 sec
+    readTimeout: 30000,       // 30 sec
+    followRedirects: false    // redirects disabled
+  }
 });
 ```
 
@@ -267,8 +299,10 @@ If you want to download a file in a synchronous way, you should do something lik
 ```js
 var res = pkg.http.api.get({
   path: '/images/client_400x400.png',
-  forceDownload: true,
-  downloadSync: true
+  settings: {
+    forceDownload: true,
+    downloadSync: true
+  }
 });
 
 log("response: "+JSON.stringify(res));
@@ -288,7 +322,7 @@ If you don't want to block execution until the download is completed, you can do
 var res = pkg.http.api.get(
   {
     path: '/images/client_400x400.png',
-    forceDownload: true
+    settings: {forceDownload: true}
   },
   {
     record: record  
@@ -311,7 +345,7 @@ var res = pkg.http.api.get(
 
 This works like any other callback where the event is `fileDownloaded`.
 
-## POST requests
+### POST requests
 
 You can make `POST` requests like this:
 
@@ -394,7 +428,7 @@ var body = {
 var res = pkg.http.api.patch('https://postman-echo.com/patch', body);
 ```
 
-## DELETE requests
+### DELETE requests
 
 You can make `DELETE` requests like this:
 
@@ -414,14 +448,16 @@ You can also use a shortcut:
 var res = pkg.http.api.delete('https://postman-echo.com/delete');
 ```
 
-## OPTIONS requests
+### OPTIONS requests
 
 You can make `OPTIONS` requests like this:
 
 ```js
 var res = pkg.http.api.options({
   url: 'https://postman-echo.com/options',
-  fullResponse: true
+  settings: {
+    fullResponse: true
+  }
 });
 log(JSON.stringify(res));
 ```
@@ -439,7 +475,9 @@ You can make `HEAD` requests like this:
 ```js
 var res = pkg.http.api.head({
   url: 'https://postman-echo.com/head',
-  fullResponse: true
+  settings: {
+    fullResponse: true
+  }
 });
 log(JSON.stringify(res));
 ```
@@ -450,7 +488,7 @@ You can also use a shortcut:
 var res = pkg.http.api.head('https://postman-echo.com/head');
 ```
 
-## Multipart requests
+### Multipart requests
 
 It is possible to send multipart request when using `POST` or `PUT`. This is specially useful when
 sending files. It works like this:
@@ -458,20 +496,22 @@ sending files. It works like this:
 ```js
 var request = {
     path: '/customers/'+customerId+'/documents/'+documentId,
-    multipart: true,
-    parts: [
-        {
-            name: 'file',
-            type: 'file',
-            fileId: record.field('document').id()
-        },
-        {
-            name: 'description',
-            type: 'other',
-            contentType: 'text/plain',
-            content: 'this is a description of the document'
-        }
-    ]
+  settings: {
+      multipart: true,
+      parts: [
+          {
+              name: 'file',
+              type: 'file',
+              fileId: record.field('document').id()
+          },
+          {
+              name: 'description',
+              type: 'other',
+              contentType: 'text/plain',
+              content: 'this is a description of the document'
+          }
+      ]
+  }
 };
 var res = pkg.http.api.post(request);
 ```
@@ -525,8 +565,7 @@ return res;
 Keep in mind that the response should be a valid JSON.
 
 ## Dependencies
-* HTTP Service (Latest Version)
-* Oauth Package (v1.0.18)
+* HTTP Service (v1.3.8)
 
 # About SLINGR
 
@@ -536,4 +575,4 @@ SLINGR is a low-code rapid application development platform that accelerates dev
 
 # License
 
-This service is licensed under the Apache License 2.0. See the `LICENSE` file for more details.
+This package is licensed under the Apache License 2.0. See the `LICENSE` file for more details.

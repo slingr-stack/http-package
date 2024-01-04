@@ -24,7 +24,12 @@ function handleRequestWithRetry(requestFn, options, callbackData, callbacks) {
     try {
         return requestFn(options, callbackData, callbacks);
     } catch (error) {
-        sys.logs.info("[http] Handling request" + JSON.stringify(error));
+        sys.logs.info("[http] Handling error... ");
+        sys.logs.info("Status code: " + JSON.stringify(e.additionalInfo.details.data.additionalInfo.status));
+        sys.logs.info("Body: " + JSON.stringify(e.additionalInfo.details.data.additionalInfo.body));
+        sys.logs.info("Headers: " + JSON.stringify(e.additionalInfo.details.data.additionalInfo.headers));
+        sys.logs.info("Short error description: " + JSON.stringify(e.message));
+        return error;
     }
 }
 
@@ -300,6 +305,8 @@ function setRequestHeaders(options) {
     }
     if (!headers.hasOwnProperty("Content-Type")) {
         headers = mergeJSON(headers, {"Content-Type": "application/json"});
+    } else if (!!options.settings && !!options.settings.forceDownload) {
+        headers = mergeJSON(headers, {"Content-Type": ""});
     }
     options.headers = headers;
     return options;
